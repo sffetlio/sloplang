@@ -1,0 +1,3 @@
+{"kind":"test","name":"fib_small","ok":true}
+{"kind":"prop","name":"fib_agrees","ok":true,"cases":256}
+{"kind":"summary","pass":2,"fail":0}

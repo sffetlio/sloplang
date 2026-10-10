@@ -1,0 +1,35 @@
+(fn is_prime ((n i64)) bool
+  (if (< n 2)
+    false
+    (do
+      (var d 2)
+      (var ok true)
+      (while (and ok (<= (* d d) n)) (if (== (% n d) 0) (set ok false)) (set d (+ d 1)))
+      ok)))
+
+(fn count_primes ((n i64)) i64
+  (doc "parallel prime count below n: disjoint writes, then a sequential sum")
+  (eff mem conc)
+  (let flags (alloc u8 n))
+  (pfor i 0 n (if (is_prime i) (put flags i 1u8)))
+  (var total 0)
+  (for i 0 n (set total (+ total (as i64 (get flags i)))))
+  (free flags)
+  total)
+
+(fn count_atomic ((n i64)) i64
+  (doc "same count with one shared atomic counter")
+  (eff mem conc)
+  (let c (alloc i64 1))
+  (pfor i 0 n (if (is_prime i) (xadd c 0 1)))
+  (let r (get c 0))
+  (free c)
+  r)
+
+(test small (assert (== (count_primes 100) 25)) (assert (== (count_atomic 100) 25)))
+
+(fn main () i64
+  (eff io mem conc)
+  (print "primes below 2000000:" (count_primes 2000000))
+  (print "atomic count agrees:" (== (count_atomic 2000000) (count_primes 2000000)))
+  0)

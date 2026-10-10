@@ -1,0 +1,2 @@
+; a comment
+(fn main () i64 0)
