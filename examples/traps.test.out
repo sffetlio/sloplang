@@ -1,0 +1,9 @@
+{"kind":"test","name":"div_ok","ok":true}
+{"kind":"test","name":"div_zero_traps","ok":false,"trap":{"code":"T0004","msg":"pre (!= b 0) failed in fn safe_div","file":"examples/traps.slop","line":1,"col":41}}
+{"kind":"test","name":"overflow_traps","ok":false,"trap":{"code":"T0001","msg":"integer overflow in *","file":"examples/traps.slop","line":9,"col":33}}
+{"kind":"test","name":"wrapping_is_explicit","ok":true}
+{"kind":"test","name":"bounds_trap","ok":false,"trap":{"code":"T0003","msg":"index out of bounds","file":"examples/traps.slop","line":13,"col":41}}
+{"kind":"test","name":"narrowing_cast_traps","ok":false,"trap":{"code":"T0011","msg":"integer cast out of range","file":"examples/traps.slop","line":15,"col":40}}
+{"kind":"prop","name":"sum_formula","ok":true,"cases":256}
+{"kind":"prop","name":"buggy_abs","ok":false,"case":{"x":0}}
+{"kind":"summary","pass":3,"fail":5}

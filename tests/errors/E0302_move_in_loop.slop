@@ -1,0 +1,7 @@
+(fn work ((b (buf i64))) i64 (len b))
+(fn main () i64 (eff mem conc)
+  (let b (alloc i64 4))
+  (let g (group i64))
+  (for i 0 4 (go g (work b)))
+  (let r (wait g))
+  (get r 0))

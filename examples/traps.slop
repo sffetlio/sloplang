@@ -1,0 +1,19 @@
+(fn safe_div ((a i64) (b i64)) i64 (pre (!= b 0)) (post (<= (* ret b) a)) (/ a b))
+
+(fn sum_to ((n i64)) i64 (var s 0) (for i 0 n (set s (+ s i))) s)
+
+(test div_ok (assert (== (safe_div 7 2) 3)))
+
+(test div_zero_traps (safe_div 1 0))
+
+(test overflow_traps (assert (> (* 9223372036854775807 2) 0)))
+
+(test wrapping_is_explicit (assert (== (*% 9223372036854775807 2) -2)))
+
+(test bounds_trap (let b (alloc i64 2)) (put b 2 1))
+
+(test narrowing_cast_traps (assert (== (as u8 300) 44u8)))
+
+(prop sum_formula ((n i64 0 1000)) (== (sum_to n) (/ (* n (- n 1)) 2)))
+
+(prop buggy_abs ((x i32 -5 5)) (> (if (< x 0) (- x) x) 0))

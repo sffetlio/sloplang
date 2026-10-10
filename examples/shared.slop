@@ -1,0 +1,23 @@
+(struct Vec2 (x f64) (y f64))
+
+(fn table ((n i64)) (buf Vec2)
+  (eff mem)
+  (let b (alloc Vec2 n))
+  (for i 0 n (put b i (mk Vec2 (as f64 i) (* 0.5 (as f64 i)))))
+  b)
+
+(fn dot_sum ((t (ro Vec2)) (lo i64) (hi i64)) f64
+  (doc "reads a frozen table; ro values are shared freely across tasks")
+  (var s 0.0)
+  (for i lo hi (let v (get t i)) (set s (+ s (+ (* (. v x) (. v x)) (* (. v y) (. v y))))))
+  s)
+
+(fn main () i64
+  (eff io mem conc)
+  (let t (freeze (table 1000)))
+  (let a (spawn (dot_sum t 0 500)))
+  (let b (spawn (dot_sum t 500 1000)))
+  (let total (+ (join a) (join b)))
+  (print "total:" total)
+  (print "matches serial:" (== total (dot_sum t 0 1000)))
+  0)

@@ -1,0 +1,18 @@
+(fn fib ((n i64)) i64
+  (doc "nth Fibonacci number, naive recursion")
+  (pre (>= n 0))
+  (post (>= ret 0))
+  (if (< n 2) n (+ (fib (- n 1)) (fib (- n 2)))))
+
+(fn fib_iter ((n i64)) i64
+  (pre (>= n 0))
+  (var a 0)
+  (var b 1)
+  (for i 0 n (let t (+ a b)) (set a b) (set b t))
+  a)
+
+(test fib_small (assert (== (fib 10) 55)))
+
+(prop fib_agrees ((n i64 0 20)) (== (fib n) (fib_iter n)))
+
+(fn main () i64 (eff io) (print "fib" 30 (fib 30)) (print "fib_iter" 90 (fib_iter 90)) 0)

@@ -1,0 +1,11 @@
+[package]
+name = "slopc"
+version = "0.1.0"
+edition = "2021"
+description = "Reference compiler for sloplang, a low-level concurrent language designed for machine authors"
+license = "MIT"
+
+[dependencies]
+
+[profile.release]
+codegen-units = 1

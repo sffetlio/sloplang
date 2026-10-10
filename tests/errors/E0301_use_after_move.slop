@@ -1,0 +1,1 @@
+(fn main () i64 (eff mem) (let b (alloc i64 4)) (free b) (get b 0))

@@ -1,0 +1,3 @@
+(fn now () i64 (eff io) (clock))
+(fn f ((x i64)) i64 (pre (> (now) 0)) x)
+(fn main () i64 0)
